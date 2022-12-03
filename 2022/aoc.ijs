@@ -44,3 +44,37 @@ end.
 
 pt2 =. +/ > Rating2 each d2
 2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
+
+d3 =: read < 'C:\Users\willi\Documents\GitHub\AOC\2022\i3.txt'
+d3 =: cutLF d3
+
+Priority =: 3 : 0
+X =: (a. i. y)
+if. (X < 97) do. (X + 27 - 65)
+else. (X + 1 - 97) end.
+)
+
+Split =: 3 : 0
+(2,((# y)%2)) $ y
+)
+
+SetIntersect =: 3 : 0
+~. (0 { y) -.^:2 (1 { y) 
+)
+
+d3_1 =: Split each d3
+d3_1 =: SetIntersect each d3_1
+
+pt1 =. +/ > Priority each d3_1
+
+SetIntersect =: 3 : 0
+~. (0 { y) -.^:2 (1 { y) -.^:2 (2 { y) -. ' '
+)
+
+d3_2 =: 100 3 $ > d3
+
+SetIntersect"2 d3_2
+pt2 =. +/ Priority"0 SetIntersect"2 d3_2
+
+2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
+
