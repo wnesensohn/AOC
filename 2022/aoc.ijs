@@ -78,3 +78,22 @@ pt2 =. +/ Priority"0 SetIntersect"2 d3_2
 
 2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
 
+d4 =: read < 'C:\Users\willi\Documents\GitHub\AOC\2022\i4.txt'
+NB. d4 =: (LF,',') cutopen d4
+d4 =: ',' cutopen each LF cutopen d4
+d4 =: ". each each ; '-' cutopen each each d4
+d4 =: (1000,4) $ ;; each d4
+
+Contains =: 3 : 0
+((0{y >: 2{y) *. (1{y <: 3{y)) +. ((2{y >: 0{y) *. (3{y <: 1{y))
+)
+
+pt1 =. +/ Contains"1 d4
+
+Overlaps =: 3 : 0
+((0{y <: 3{y) *. (2{y <: 1{y))
+)
+
+pt2 =. +/ Overlaps"1 d4
+
+2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
