@@ -79,10 +79,9 @@ pt2 =. +/ Priority"0 SetIntersect"2 d3_2
 2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
 
 d4 =: read < 'C:\Users\willi\Documents\GitHub\AOC\2022\i4.txt'
-NB. d4 =: (LF,',') cutopen d4
-d4 =: ',' cutopen each LF cutopen d4
-d4 =: ". each each ; '-' cutopen each each d4
-d4 =: (1000,4) $ ;; each d4
+
+d4 =: ;". each (',-',LF) cutopen d4
+d4 =: (((#d4)%4),4) $ d4
 
 Contains =: 3 : 0
 ((0{y >: 2{y) *. (1{y <: 3{y)) +. ((2{y >: 0{y) *. (3{y <: 1{y))
@@ -96,4 +95,47 @@ Overlaps =: 3 : 0
 
 pt2 =. +/ Overlaps"1 d4
 
+
+
 2 2 $ 'pt1'; pt1 ; 'pt2' ; pt2
+
+d5 =: read <'C:\Users\willi\Documents\GitHub\AOC\2022\i5.txt'
+d5 =: cutLF d5
+moves =: (9+i._9+#d5) { d5 NB. Life is hard enough without input parsing
+moves =: > ". each ((60+i.100){a.) cutopen"1 >moves
+
+stacks =: (1+4*i.9) {"1 (>(i.8){d5) NB. Well, a computer is for parsing.
+
+moves =: |: (0 _1 _1) + |:moves
+stacks =: >>' ' cutopen each <"1 |: stacks
+
+stacks;|:moves
+
+NB. stacks and moves are now in a shape that's suitable
+NB. for solving the problem, maybe they need to be transposed
+NB. but with neither intuition nor knowledge, trial-and-error it is
+
+
+NB. concatenates arrays
+(3&{. , _3&{.) stacks
+
+NB. replace stack at pos with new value - not very elegant
+NB. but could be a building block for the final verb
+pos =: 5
+((pos-1)&{. , ((,'new value') , (pos-9)&{.)) stacks
+
+(i.2) { moves
+
+NB. power is used like this (3 is the # of "iterations" and
+NB. 2&* is just a verb - this would be the final modifier
+(2&*^: 3) 1
+
+NB. Plan is to create a monad which takes the pending moves and the
+NB. current stacks, performs the shuffle and outputs the remaining
+NB. moves and the new stacks. However, to do this, I think the moves
+NB. and stacks have to be boxed, and the monad must produce a box
+NB. of same shape. Then this verb can be applied with power #moves
+NB. times and out comes the final stack. So is the theory.
+
+NB. given the source, target and number of items, coming up with
+NB. new stacks should be easy, relatively speaking.
